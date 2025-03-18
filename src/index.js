@@ -1,6 +1,9 @@
 import { Client, Storage } from "node-appwrite";
 
 export default async ({ event, payload }) => {
+    console.log("Event:", event);
+    console.log("Payload:", payload);
+
     if (!event.startsWith("databases.") || !event.includes(".collections.offers.documents.delete")) {
         return;
     }
