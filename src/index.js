@@ -9,7 +9,7 @@ export default async () => {
         payload = functionData.payload;
     } catch (err) {
         console.error("Error parsing function data", err);
-        return;
+        return context.res.empty();
     }
     
     console.log("Event:", event);
@@ -17,7 +17,7 @@ export default async () => {
 
     // If event does not match our deletion event, exit
     if (!event || !event.startsWith("databases.") || !event.includes(".collections.offers.documents.delete")) {
-        return;
+        return context.res.empty();
     }
 
     // Initialize Appwrite SDK
@@ -43,4 +43,6 @@ export default async () => {
     } catch (error) {
         console.error("Error deleting images:", error);
     }
+
+    return context.res.empty();
 };
