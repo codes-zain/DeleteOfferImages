@@ -1,10 +1,22 @@
 import { Client, Storage } from "node-appwrite";
 
-export default async ({ event, payload }) => {
+export default async () => {
+    // Parse input from environment variable
+    let event, payload;
+    try {
+        const functionData = JSON.parse(process.env.APPWRITE_FUNCTION_DATA || '{}');
+        event = functionData.event;
+        payload = functionData.payload;
+    } catch (err) {
+        console.error("Error parsing function data", err);
+        return;
+    }
+    
     console.log("Event:", event);
     console.log("Payload:", payload);
 
-    if (!event.startsWith("databases.") || !event.includes(".collections.offers.documents.delete")) {
+    // If event does not match our deletion event, exit
+    if (!event || !event.startsWith("databases.") || !event.includes(".collections.offers.documents.delete")) {
         return;
     }
 
